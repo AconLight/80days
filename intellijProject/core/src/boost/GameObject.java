@@ -1,0 +1,102 @@
+package boost;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Group;
+
+import java.util.ArrayList;
+
+public class GameObject extends Group {
+    public static Boolean canUpdate = true;
+    public float index;
+    public float alfa = 1f;
+
+    public String id = "-1";
+
+    public ShaderProgram shader;
+
+    protected ArrayList<GameComponent> components;
+
+    public GameObject() {
+        create(0);
+    }
+
+    public GameObject(float index, String id) {
+        this.id = id;
+        create(index);
+    }
+
+    public GameObject(float index) {
+        create(index);
+    }
+
+    public void create(float index) {
+        this.index = index;
+        Gdx.app.log("GameObject", "creating " + id);
+        GameObjectManager.registerCreationOfGameObject(this, id);
+        if (GameObjectManager.gameObjects.get(id) == null) {
+            Gdx.app.log("GameObject", "null " + id);
+        } else {
+            Gdx.app.log("GameObject", "not null " + id);
+        }
+        ShaderProgram shader = new ShaderProgram(Gdx.files.internal("shaders/example.vert"), Gdx.files.internal("shaders/example.frag"));
+        setShader(shader);
+        components = new ArrayList<>();
+    }
+
+    public void setShader(ShaderProgram shader) {
+        this.shader = shader;
+    }
+
+    public void setShader(String name) {
+        this.shader = new ShaderProgram(Gdx.files.internal("shaders/" + name + ".vert"), Gdx.files.internal("shaders/" + name + ".frag"));
+        Gdx.app.log(name, "is compiled: " + shader.isCompiled());
+    }
+
+    public void addComponent(GameComponent component) {
+        components.add(component);
+    }
+
+    public void destroy() {
+        // TODO
+    }
+
+    @Override
+    public void act(float delta) {
+        myAct(delta);
+    }
+
+    public void myAct(float delta) {
+        if (canUpdate) {
+            super.act(delta);
+            for (GameComponent component : components) {
+                component.actBefore(delta);
+            }
+            for (GameComponent component : components) {
+                component.act(delta);
+            }
+            for (GameComponent component : components) {
+                component.actAfter(delta);
+            }
+            update(delta);
+        } else {
+            super.act(delta);
+        }
+    }
+
+    public void update(float delta) {
+
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlfa) {
+        batch.setShader(shader);
+        if (GameObjectManager.currentIndex == index) {
+            super.draw(batch, parentAlfa * alfa);
+        }
+        else if (this instanceof GameObject) {
+            drawChildren(batch, parentAlfa * alfa);
+        }
+    }
+}
