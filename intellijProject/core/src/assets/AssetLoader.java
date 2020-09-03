@@ -76,6 +76,8 @@ public class AssetLoader {
 
     public static void load() {
         createAsset("badlogic.jpg", "badlogic");
+        createAsset("graphics/sprites/dot.png", "dot");
+        createAsset("graphics/sprites/dot2.png", "dot2");
 
         loadAnimations();
 

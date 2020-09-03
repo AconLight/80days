@@ -2,13 +2,16 @@ package boost;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.backgroundProcess.BackgroundProcess;
 
 import java.util.ArrayList;
 
 public class SceneManager {
     private static ArrayList<MyScene> scenes, scenesToRemove, scenesToAdd;
 
+
     public void createSceneManager() {
+        BackgroundProcess.createBackgroundProcess();
         scenes = new ArrayList<>();
         scenesToAdd = new ArrayList<>();
         scenesToRemove = new ArrayList<>();
@@ -33,6 +36,7 @@ public class SceneManager {
     }
 
     public void act() {
+        BackgroundProcess.executeOne();
         for (MyScene scene: scenes) {
             scene.act();
         }

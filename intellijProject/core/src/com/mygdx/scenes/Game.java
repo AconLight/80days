@@ -2,13 +2,14 @@ package com.mygdx.scenes;
 
 import assets.AssetLoader;
 import boost.MyScene;
+import com.mygdx.gameObjects.Earth;
 
 public class Game extends MyScene {
 
 
 
     public Game() {
-        this.stage.addActor(AssetLoader.getAsset("badlogic"));
+        this.stage.addActor(new Earth());
     }
 
 

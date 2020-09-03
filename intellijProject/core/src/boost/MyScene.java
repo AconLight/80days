@@ -10,7 +10,7 @@ public class MyScene {
     protected Boolean canClearScreen;
 
     public MyScene() {
-        this.stage = new Stage(new ExtendViewport(1920, 1080));
+        this.stage = new Stage(new ExtendViewport(1600, 1600));
         this.renderer = new GameObjectRenderer(stage);
     }
 
